@@ -27,11 +27,12 @@ export const useWithTheme = <Classes>(
     : []
 ): ResultType<Classes> => {
   const theme = useTheme();
+  const props = rest[0];
 
   return Object.entries(classes).reduce(
     (result, [key, value]) => ({
       ...result,
-      [key]: typeof value === 'function' ? value(theme, rest[0]) : value,
+      [key]: typeof value === 'function' ? value(theme, props) : value,
     }),
     {} as ResultType<Classes>
   );
