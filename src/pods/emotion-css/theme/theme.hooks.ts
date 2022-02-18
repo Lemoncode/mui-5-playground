@@ -9,7 +9,9 @@ export type ResultType<Classes> = {
 export type PropsType<Classes, K extends keyof Classes = keyof Classes> = {
   [Key in K]: Classes[Key] extends (arg1: any, arg2: any) => string
     ? Parameters<Classes[Key]>[1]
-    : undefined;
+    : Classes[Key] extends string
+    ? undefined
+    : PropsType<Classes[Key]>;
 }[K];
 
 export const useWithTheme = <Classes>(
