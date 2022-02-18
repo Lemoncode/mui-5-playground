@@ -4,6 +4,6 @@ export const root = css`
   background-color: red;
 `;
 
-export const p = css`
+export const paragraph = css`
   color: white;
 `;

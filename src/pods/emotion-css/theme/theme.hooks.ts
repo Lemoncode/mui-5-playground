@@ -20,6 +20,21 @@ export type ClassesHasProps<Classes> = PropsType<Classes> extends never
   ? false
   : true;
 
+const feedThemeAndProps = (classes, theme, props) => {
+  return Object.entries(classes).reduce(
+    (result, [key, value]) => ({
+      ...result,
+      [key]:
+        typeof value === 'function'
+          ? value(theme, props)
+          : typeof value === 'object'
+          ? feedThemeAndProps(value, theme, props)
+          : value,
+    }),
+    {}
+  );
+};
+
 export const useWithTheme = <Classes>(
   classes: Classes,
   ...rest: ClassesHasProps<Classes> extends true
@@ -29,11 +44,5 @@ export const useWithTheme = <Classes>(
   const theme = useTheme();
   const props = rest[0];
 
-  return Object.entries(classes).reduce(
-    (result, [key, value]) => ({
-      ...result,
-      [key]: typeof value === 'function' ? value(theme, props) : value,
-    }),
-    {} as ResultType<Classes>
-  );
+  return feedThemeAndProps(classes, theme, props) as ResultType<Classes>;
 };

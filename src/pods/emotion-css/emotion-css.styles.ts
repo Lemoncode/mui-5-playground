@@ -1,26 +1,36 @@
 import { css } from '@emotion/css';
 import { Theme } from '@mui/material';
-import { exposeStylesClasses } from './components';
-import { theme } from './theme';
+import { myLibComponentClassNames } from './components';
 
-export const exposeStyles = {
-  root: css`
-    background-color: blue;
-  `,
-  p: css`
-    color: black;
-  `,
-};
-
-export const usingGlobalCssNames = css`
-  background-color: green;
-
-  & ${exposeStylesClasses.p} {
-    color: black;
+export const nativeElement = css`
+  background-color: tomato;
+  color: black;
+  @media (min-width: 1200px) {
+    color: #fff;
   }
 `;
 
-export const textFieldGlobalClasses = css`
+export const nativeElementWithTheme = (theme: Theme) => css`
+  background-color: ${theme.palette.primary.main};
+  color: red;
+  ${theme.breakpoints.up('lg')} {
+    color: ${theme.palette.primary.contrastText};
+  }
+`;
+
+interface Props {
+  color: string;
+}
+
+export const nativeElementWithProps = (theme: Theme, props: Props) => css`
+  background-color: ${theme.palette.primary.main};
+  color: red;
+  ${theme.breakpoints.up('lg')} {
+    color: ${props.color};
+  }
+`;
+
+export const muiComponentGlobalClasses = css`
   & label.Mui-focused {
     color: green;
   }
@@ -43,18 +53,23 @@ export const textFieldGlobalClasses = css`
   }
 `;
 
-export const textFieldObjectClasses = css`
-  color: green;
+export const myLibComponentClassesObject = {
+  root: (theme: Theme) => css`
+    padding: ${theme.spacing(2)};
+  `,
+  paragraph: css`
+    color: black;
+  `,
+};
+
+export const myLibComponentGlobalClasses = (theme: Theme) => css`
+  padding: ${theme.spacing(2)};
+  & ${myLibComponentClassNames.paragraph} {
+    color: yellow;
+  }
 `;
 
-export const usingThemeFromImportClasses = css`
-  color: ${theme.palette.primary.main};
-`;
-
-interface Props {
-  color: string;
-}
-
-export const usingThemeFromHookClasses = (theme: Theme, props: Props) => css`
-  color: ${theme.palette.primary.main};
+export const description = (theme: Theme) => css`
+  background-color: ${theme.palette.primary.main};
+  color: ${theme.palette.primary.contrastText};
 `;

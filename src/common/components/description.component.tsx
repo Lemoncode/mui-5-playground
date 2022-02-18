@@ -1,5 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
 import { css } from '@emotion/css';
 
 const classes = {
@@ -37,6 +36,7 @@ export const DescriptionComponent: React.FC<Props> = (props) => {
   const { className, component, children, css } = props;
 
   const elements = JSON.stringify(children)
+    .replace(/\\"/g, '"')
     .split('\\n')
     .slice(1, -1)
     .map((row, index) => <span key={index}>{row}</span>);

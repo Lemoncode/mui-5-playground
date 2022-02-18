@@ -1,1 +1,1 @@
-export * from './expose-styles.component';
+export * from './my-lib-component';
