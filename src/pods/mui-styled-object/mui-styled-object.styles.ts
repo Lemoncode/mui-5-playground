@@ -1,16 +1,6 @@
 import { styled, TextField } from '@mui/material';
 import { DescriptionComponent } from 'common/components';
 
-export const StyledDescriptionComponent = styled(DescriptionComponent)(
-  ({ theme }) => ({
-    backgroundColor: theme.palette.primary.main,
-    color: 'red',
-    [theme.breakpoints.up('lg')]: {
-      color: theme.palette.primary.contrastText,
-    },
-  })
-);
-
 export const TextFieldComponent = styled(TextField)({
   '& label.Mui-focused': {
     color: 'green',
@@ -30,3 +20,13 @@ export const TextFieldComponent = styled(TextField)({
     },
   },
 });
+
+export const StyledDescriptionComponent = styled(DescriptionComponent)(
+  ({ theme }) => ({
+    backgroundColor: theme.palette.primary.main,
+    color: 'red',
+    [theme.breakpoints.up('lg')]: {
+      color: theme.palette.primary.contrastText,
+    },
+  })
+);

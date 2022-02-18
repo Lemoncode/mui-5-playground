@@ -11,6 +11,32 @@ export const MuiStyledObjectComponent: React.FC = (props) => {
       <StyledDescriptionComponent
         component={
           <ProsConsListComponent
+            pros={[
+              'Default installation for mui-v5',
+              'Non more config needed',
+              'Zero-config SSR thanks to @emotion/react',
+            ]}
+            cons={[]}
+          />
+        }
+      >
+        {`
+============================================================
+  Installation
+============================================================
+  --------------------------------------
+  npm install -P @mui/material @emotion/react @emotion/styled
+  --------------------------------------
+      - Necessary dependencies to work with mui v5
+      - Not necessary @emotion/react @emotion/styles
+        if we use unstyled components:
+
+        \`import { ButtonUnstyled } from '@mui/base';\`
+`}
+      </StyledDescriptionComponent>
+      <StyledDescriptionComponent
+        component={
+          <ProsConsListComponent
             pros={['Official way', 'Intellisense at first level']}
             cons={[
               'Object annotation',
@@ -59,7 +85,7 @@ export const MuiStyledObjectComponent: React.FC = (props) => {
             pros={[]}
             cons={[
               'Force to rename the component like StyledMyComponent',
-              'We cannot forget use this className here because if not, it doesn\'t apply the style',
+              "We cannot forget use this className here because if not, it doesn't apply the style",
             ]}
           />
         }
