@@ -11,7 +11,7 @@ export const StyledDescriptionComponent = styled(DescriptionComponent)(
   })
 );
 
-export const TextFieldComponent = styled(TextField)(({ theme }) => ({
+export const TextFieldComponent = styled(TextField)({
   '& label.Mui-focused': {
     color: 'green',
   },
@@ -29,4 +29,4 @@ export const TextFieldComponent = styled(TextField)(({ theme }) => ({
       borderColor: 'green',
     },
   },
-}));
+});

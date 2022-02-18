@@ -30,10 +30,11 @@ const classes = {
 interface Props {
   component?: React.ReactElement;
   className?: string;
+  css?;
 }
 
 export const DescriptionComponent: React.FC<Props> = (props) => {
-  const { className, component, children } = props;
+  const { className, component, children, css } = props;
 
   const elements = JSON.stringify(children)
     .split('\\n')
@@ -41,7 +42,7 @@ export const DescriptionComponent: React.FC<Props> = (props) => {
     .map((row, index) => <span key={index}>{row}</span>);
 
   return (
-    <div className={className}>
+    <div className={className} css={css}>
       <pre className={classes.pre}>
         <code className={classes.code}>{elements}</code>
         {component && <span className={classes.component}>{component}</span>}
