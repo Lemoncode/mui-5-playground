@@ -6,7 +6,7 @@ import { useWithTheme } from './theme';
 import * as innerClasses from './emotion-css.styles';
 
 export const EmotionCssComponent: React.FC = (props) => {
-  const classes = useWithTheme(innerClasses);
+  const classes = useWithTheme(innerClasses, { color: 'test' });
 
   return (
     <div>
