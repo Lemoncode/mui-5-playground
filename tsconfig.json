@@ -6,7 +6,7 @@
     "declaration": false,
     "noImplicitAny": false,
     "sourceMap": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noLib": false,
     "allowJs": true,
     "suppressImplicitAnyIndexErrors": true,
@@ -21,7 +21,8 @@
       "pods": ["pods"],
       "scenes": ["scenes"],
       "common-app": ["common-app"]
-    }
+    },
+    "types": ["@emotion/react/types/css-prop"]
   },
   "include": ["./src/**/*", "./config/test/setup.ts", "./global.types.d.ts"]
 }
