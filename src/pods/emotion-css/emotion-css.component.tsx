@@ -16,6 +16,7 @@ export const EmotionCssComponent: React.FC = (props) => {
           <ProsConsListComponent
             pros={[
               'Easy migration for legacy projects using @emotion/css + mui-v4',
+              'Zero-config SSR thanks to @emotion/react (For mui components)'
             ]}
             cons={[
               'Extra prod dependency for styles',
@@ -123,7 +124,7 @@ export const EmotionCssComponent: React.FC = (props) => {
               pros={['Same as before. We still have intellisense']}
               cons={[
                 'Rename classes object to innerClasses',
-                'Custom hook for inyect theme?',
+                'Custom hook for inject theme?',
               ]}
             />
           </>
