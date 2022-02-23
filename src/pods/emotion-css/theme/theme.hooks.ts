@@ -35,7 +35,7 @@ const feedThemeAndProps = (classes, theme, props) => {
   );
 };
 
-export const useWithTheme = <Classes>(
+export const useWithTheme = <Classes extends Record<string, unknown>>(
   classes: Classes,
   ...rest: ClassesHasProps<Classes> extends true
     ? [props: PropsType<Classes>]
