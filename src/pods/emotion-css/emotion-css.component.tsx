@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 import { DescriptionComponent, ProsConsListComponent } from 'common/components';
-import { MyLibComponent } from './components';
+import { MyLibComponent, MuiWrapLibComponent } from './components';
 import { useWithTheme } from './theme';
 import * as innerClasses from './emotion-css.styles';
 
@@ -16,7 +16,7 @@ export const EmotionCssComponent: React.FC = (props) => {
           <ProsConsListComponent
             pros={[
               'Easy migration for legacy projects using @emotion/css + mui-v4',
-              'Zero-config SSR thanks to @emotion/react (For mui components)'
+              'Zero-config SSR thanks to @emotion/react (For mui components)',
             ]}
             cons={[
               'Extra prod dependency for styles',
@@ -242,7 +242,7 @@ export const EmotionCssComponent: React.FC = (props) => {
                 'Full intellinsense at any level',
                 'We can use theme like native elements',
                 'We can use props like native elements',
-                '<StyledEngineProvider injectFirst> (using Mui Global ClassNames)'
+                '<StyledEngineProvider injectFirst> (using Mui Global ClassNames)',
               ]}
               cons={[
                 'Need some changes from JS to CSS annotation to copy/paste styles',
@@ -540,6 +540,81 @@ export const EmotionCssComponent: React.FC = (props) => {
 
       return (
         <MyLibComponent className={classes.myLibComponentGlobalClasses} />
+      );
+    }
+`}
+      </DescriptionComponent>
+      <DescriptionComponent
+        className={classes.description}
+        component={
+          <>
+            <MuiWrapLibComponent className={classes.muiWrapLibComponent}>
+              This is an alert
+            </MuiWrapLibComponent>
+          </>
+        }
+      >
+        {`
+============================================================
+  MUI Custom Component Library (Global ClassNames)
+============================================================
+  --------------------------------------
+  ./mui-wrap-lib-component.styles.ts (same as before)
+  --------------------------------------
+    import { css } from '@emotion/css';
+
+    export const root = css\`
+      &.MuiAlert-root {
+        border-radius: 0;
+        background-color: blue;
+      }
+    \`;
+
+
+
+  --------------------------------------
+  ./mui-wrap-lib-component.tsx
+  --------------------------------------
+    import React from 'react';
+    import clsx from 'clsx';
+    import { Alert, AlertProps } from '@mui/material';
+    import * as classes from './mui-wrap-lib-component.styles';
+
+    interface Props extends AlertProps {}
+
+    export const MuiWrapLibComponent: React.FC<Props> = (props) => {
+      const { className, ...rest } = props;
+      return <Alert className={clsx(classes.root, className)} {...rest} />;
+    };
+
+
+============================================================
+  Using component
+============================================================
+  --------------------------------------
+  ./styles.ts
+  --------------------------------------
+    import { css } from '@emotion/css';
+    import { Theme } from '@mui/material';
+
+    export const muiWrapLibComponent = (theme: Theme) => css\`
+      &.MuiAlert-root {
+        background-color: red;
+      }
+    \`;
+
+  --------------------------------------
+  ./component.tsx
+  --------------------------------------
+    import React from 'react';
+    import { useWithTheme } from 'core/theme';
+    import * as innerClasses from './styles.ts';
+
+    export const Component: React.FC = () => {
+      const classes = useWithTheme(innerClasses);
+
+      return (
+        <MuiWrapLibComponent className={classes.muiWrapLibComponent} />
       );
     }
 `}

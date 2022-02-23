@@ -69,6 +69,12 @@ export const myLibComponentGlobalClasses = (theme: Theme) => css`
   }
 `;
 
+export const muiWrapLibComponent = (theme: Theme) => css`
+  &.MuiAlert-root {
+    background-color: red;
+  }
+`;
+
 export const description = (theme: Theme) => css`
   background-color: ${theme.palette.primary.main};
   color: ${theme.palette.primary.contrastText};
