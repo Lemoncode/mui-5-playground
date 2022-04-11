@@ -25,6 +25,10 @@ export const NavigationFrame: React.FC = (props) => {
         />
         <LinkTab label="Emotion React" to={linkRoutes.emotionReact} />
         <LinkTab label="Emotion CSS" to={linkRoutes.emotionCss} />
+        <LinkTab
+          label="Universitas Example"
+          to={linkRoutes.universitasExample}
+        />
       </Tabs>
       {children}
     </div>

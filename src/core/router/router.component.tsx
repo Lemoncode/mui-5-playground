@@ -7,6 +7,7 @@ import {
   MuiStyledTemplateScene,
   EmotionReactScene,
   EmotionCssScene,
+  UniversitasScene,
 } from 'scenes';
 
 export const RouterComponent: React.FunctionComponent = () => {
@@ -28,6 +29,10 @@ export const RouterComponent: React.FunctionComponent = () => {
             element={<EmotionReactScene />}
           />
           <Route path={switchRoutes.emotionCss} element={<EmotionCssScene />} />
+          <Route
+            path={switchRoutes.universitasExample}
+            element={<UniversitasScene />}
+          />
         </Routes>
       </NavigationFrame>
     </HashRouter>

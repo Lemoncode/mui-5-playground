@@ -4,6 +4,7 @@ interface BaseRoutes {
   muiStyledTemplate: string;
   emotionReact: string;
   emotionCss: string;
+  universitasExample: string;
 }
 
 const baseRoutes: BaseRoutes = {
@@ -12,6 +13,7 @@ const baseRoutes: BaseRoutes = {
   muiStyledTemplate: '/mui-styled-template',
   emotionReact: '/emotion-react',
   emotionCss: '/emotion-css',
+  universitasExample: '/universitas-example',
 };
 
 type SwitchRoutes = BaseRoutes;
