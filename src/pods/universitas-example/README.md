@@ -38,10 +38,13 @@ Vamos a crear un componente sencillo junto con su hoja de estilos donde iremos u
   export const UniversitasComponent: React.FunctionComponent = () => {
     return (
       <div className={innerClasses.root}>
-        {' '}
         // Asignamos la clase correspondiente al elemento
         <Typography variant="h1">Hello world!!</Typography>
       </div>
     );
   };
   ```
+
+#### 02 - Clases básico
+
+Como podemos observar en la documentación de **MUI5** la utilización de las clases en los componentes ha cambiado. Antes disponíamos de la propiedad `className` que atacaba al elemento raíz y de la propiedad `classes` que incluía las distintas clases que pudiera tener ese componente. Esta última propiedad es la que ha quedado deprecada con lo que tendremos que utilizar las diferentes clases que nos proporciona MUI pero atacándolas desde el elemento raíz.
