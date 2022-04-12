@@ -1,5 +1,12 @@
 import React from 'react';
-import { Typography, Theme, useMediaQuery } from '@mui/material';
+import {
+  Typography,
+  Card,
+  CardHeader,
+  CardContent,
+  Theme,
+  useMediaQuery,
+} from '@mui/material';
 import { useWithTheme } from './theme/theme.hooks';
 import * as innerClasses from './universitas-example.styles';
 
@@ -14,6 +21,14 @@ export const UniversitasComponent: React.FunctionComponent<Props> = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h1">Hello world!!</Typography>
+      <Card className={innerClasses.cardContent}>
+        <CardHeader title="Card Header" />
+        <CardContent>
+          <Card>
+            <Typography variant="h2">Card Content</Typography>
+          </Card>
+        </CardContent>
+      </Card>
     </div>
   );
 };
