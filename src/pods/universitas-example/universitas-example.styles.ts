@@ -1,11 +1,5 @@
 import { css } from '@emotion/css';
-import {
-  Theme,
-  cardClasses,
-  cardHeaderClasses,
-  cardContentClasses,
-  paperClasses,
-} from '@mui/material';
+import { Theme, cardHeaderClasses, cardContentClasses } from '@mui/material';
 
 interface Props {
   w: boolean;
@@ -16,28 +10,24 @@ export const root = (theme: Theme, props: Props) => css`
   background-color: ${props.w ? 'black' : 'yellow'};
 `;
 
-export const cardContent = css`
-  &.${paperClasses.root}.${cardClasses.root} {
-    background-color: yellow;
-    & .${paperClasses.root} {
-      background-color: blue;
-    }
-  }
-  &.${paperClasses.root} {
-    background-color: pink;
-  }
+export const mainCard = css`
+  height: max-content;
+  width: max-content;
+  background-color: red;
+`;
 
-  & .${cardClasses.root} {
-    height: max-content;
-    width: max-content;
-    background-color: red;
-  }
+export const secondaryCard = css`
+  height: max-content;
+  width: max-content;
+  background-color: blue;
+`;
 
+export const cardHeader = css`
   & .${cardHeaderClasses.title} {
     color: white;
   }
+`;
 
-  & .${cardContentClasses.root} {
-    background-color: whitesmoke;
-  }
+export const cardContent = css`
+  background-color: whitesmoke;
 `;

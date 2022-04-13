@@ -179,15 +179,15 @@ Si observamos el código con el inspector del navegador podemos verlo más claro
 
 ![](assets/01.png)
 
-## Clases avanzado
+## Clases avanzado (Selectores y especificidad)
 
-Cuando en un componente solo existen elementos únicos tenemos una mayor flexibilidad a la hora de utilizar los nombres de clases para aplicar los estilos, pero son muchos los casos en que un componente contiene varios elementos del mismo tipo pero y cada aplica sus características y estilos. Por ejemplo es muy común encontrar diferentes elementos `<Typography>` dentro de un componente.
+Cuando en un componente solo existen elementos únicos tenemos una mayor flexibilidad a la hora de utilizar los nombres de clases para aplicar los estilos, pero son muchos los casos en que un componente contiene varios elementos del mismo tipo y cada uno aplica sus características y estilos. Por ejemplo es muy común encontrar diferentes elementos `<Typography>` dentro de un componente.
 
 Para evitar casos como en el ejemplo anterior y tener un mayor control de los estilos que cada elemento necesita, veremos nuevas formas de utilizar las clases y de qué manera estas afectan a los componentes.
 
-Lo que veremos en esta sección no es nada específico de **MUI** o **Emotion** sino de reglas puras **CSS** a la hora de combinar clases (combinadores) y la especificidad que estas reglas aplican.
+Lo que veremos en esta sección no es nada específico de **MUI** o **Emotion** sino de reglas puras **CSS** utilizando selectores y la especificidad que estos aplican.
 
-Vamos a comenzar cambiando nuestro componente. Al elemento `<Cad>` padre le hemos añadido la clase `cardRoot` y hemos sustituido el elemento `<h2>` por un `<Typography>`.
+Vamos a comenzar cambiando nuestro componente. Al elemento `<Card>` padre le hemos añadido la clase `mainCard` y hemos sustituido el elemento `<h2>` por un `<Typography>`.
 
 ```diff
 // universitas-example.component.tsx
@@ -201,7 +201,7 @@ export const UniversitasComponent: React.FunctionComponent = () => {
     <div className={innerClasses.root}>
       <Typography variant="h1">Hello world!!</Typography>
 -      <Card>
-+      <Card className={innerClasses.cardRoot}>
++      <Card className={innerClasses.mainCard}>
         <CardHeader title="Card Header" />
         <CardContent>
           <Card>
@@ -242,7 +242,7 @@ export const root = css`
 -  }
 `;
 
-+ export const cardContent = css`
++ export const mainCard = css`
 +   & .${cardClasses.root} {
 +     height: max-content;
 +     width: max-content;
@@ -259,9 +259,17 @@ export const root = css`
 + `;
 ```
 
-¿Qué sucede con las `Cards`?... Ahora los estilos de la clase `cardClasses.root` solo afectan a la **Card** hija, pero ¿Por qué?... Para entender bien esto y los siguientes pasos nuestro mejor aliado será el navegador y su inspector de código.
+¿Qué sucede con las `Cards`?... Ahora los estilos de la clase `cardClasses.root` solo afectan a la **Card** hija, pero ¿Por qué?... Porque estamos utilizando anidamiento de clases, es decir, estamos diciendo que todos los elementos con la clase `cardClasses.root` que se encuentren dentro del elemento padre con la clases `mainCard` se les apliquen estos estilos. En **CSS** los escribiríamos así:
 
-Vamos a agregar un color de fondo al raíz de la card y observar que sucede desde el navegador:
+```css
+.mainCard .cardClassesRoot {
+  height: max-content;
+  width: max-content;
+  background-color: red;
+}
+```
+
+Vamos a agregar un color de fondo a la card principal.
 
 ```diff
 // universitas-example.styles.ts
@@ -273,7 +281,7 @@ export const root = css`
   color: red;
 `;
 
- export const cardContent = css`
+ export const mainCard = css`
 +  background-color: blue;
 
    & .${cardClasses.root} {
@@ -292,4 +300,262 @@ export const root = css`
  `;
 ```
 
-![](assets/02.png)
+Veamos que pasa si eliminamos el espacio entre el ampersan (que hace referencia a la clase mainCard) y el nombre de la clase.
+
+```diff
+// universitas-example.styles.ts
+
+import { css } from '@emotion/css';
+import { cardClasses, cardHeaderClasses, cardContentClasses } from '@mui/material';
+
+export const root = css`
+  color: red;
+`;
+
+ export const mainCard = css`
+    background-color: blue;
+
+-   & .${cardClasses.root} {
++   &.${cardClasses.root} {
+     height: max-content;
+     width: max-content;
+     background-color: red;
+   }
+
+   & .${cardHeaderClasses.title} {
+     color: white;
+   }
+
+   & .${cardContentClasses.root} {
+     background-color: whitesmoke;
+   }
+ `;
+```
+
+Qué ha sucedido:
+
+- El fondo azul ha sido sustituido por el rojo y los estilos solo aplican a la `Card` principal. Esto es así porque estamos indicando que se apliquen a todo elemento que contenga las clases `mainCard` y `cardClasses.root`.
+
+- Por otro lado el fondo azul a cambiado por el rojo debido a la especificidad. Dicho con palabras sería algo como: _"Tiene más peso decir: ***Pinta de rojo a todo el que tenga las clases mainCard y cardClasses.root*** que ***Pinta de azul a todo el que tenga la clase mainCard***"_.
+
+Sigamos jugando. Si quisíeramos aplicar los mismo estilos a las dos `cards` podríamos hacerlo de la siguiente forma:
+
+```diff
+// universitas-example.styles.ts
+
+import { css } from '@emotion/css';
+import { cardClasses, cardHeaderClasses, cardContentClasses } from '@mui/material';
+
+export const root = css`
+  color: red;
+`;
+
+ export const mainCard = css`
+-    background-color: blue;
+
+-   &.${cardClasses.root} {
++   &.${cardClasses.root}, & .${cardClasses.root} {
+     height: max-content;
+     width: max-content;
+     background-color: red;
+   }
+
+   & .${cardHeaderClasses.title} {
+     color: white;
+   }
+
+   & .${cardContentClasses.root} {
+     background-color: whitesmoke;
+   }
+ `;
+```
+
+Si por ejemplo solo queremos cambiar el color de fondo a la segunda `card` añadiríamos esto:
+
+```diff
+// universitas-example.styles.ts
+
+import { css } from '@emotion/css';
+import { cardClasses, cardHeaderClasses, cardContentClasses } from '@mui/material';
+
+export const root = css`
+  color: red;
+`;
+
+ export const mainCard = css`
+    background-color: blue;
+
+   &.${cardClasses.root}, & .${cardClasses.root} {
+     height: max-content;
+     width: max-content;
+     background-color: red;
+   }
+
++   & .${cardClasses.root} {
++    background-color: blue;
++   }
+
+   & .${cardHeaderClasses.title} {
+     color: white;
+   }
+
+   & .${cardContentClasses.root} {
+     background-color: whitesmoke;
+   }
+ `;
+```
+
+## Optimización
+
+Hasta ahora hemos visto como atacar a distintos elementos desde un contenedor padre. Lo hemos hecho así porque hay casos en los que es la única forma de estilar las distintas partes de un componente, bien sea porque **MUI** así lo implementa o si el componente es propio porque así lo hemos decicido no exponiendo sus clases.
+
+Este ejemplo no es el caso, ya que si nos fijamos podemos utilizar el `className` de cada elemento para inyectar sus clases.
+
+Empecemos con las `cars`, creando una clase específica para cada una. Este componente de **MUI** solo dispone de una clase interna `root` con lo que en este caso ya no será necesaria.
+
+```diff
+// universitas-example.styles.ts
+
+import { css } from '@emotion/css';
+- import { cardClasses, cardHeaderClasses, cardContentClasses } from '@mui/material';
++ import { cardHeaderClasses, cardContentClasses } from '@mui/material';
+
+export const root = css`
+  color: red;
+`;
+
+ export const mainCard = css`
+-    background-color: blue;
+
+-   &.${cardClasses.root}, & .${cardClasses.root} {
+     height: max-content;
+     width: max-content;
+     background-color: red;
+-   }
+
+-   & .${cardClasses.root} {
+-    background-color: blue;
+-   }
+
+   & .${cardHeaderClasses.title} {
+     color: white;
+   }
+
+   & .${cardContentClasses.root} {
+     background-color: whitesmoke;
+   }
+ `;
+
++  export const secondaryCard = css`
++    height: max-content;
++    width: max-content;
++    background-color: blue;
++  `;
+```
+
+```diff
+// universitas-example.component.tsx
+
+import React from 'react';
+import { Typography, Card, CardHeader, CardContent } from '@mui/material';
+import * as innerClasses from './universitas-example.styles';
+
+export const UniversitasComponent: React.FunctionComponent = () => {
+  return (
+    <div className={innerClasses.root}>
+      <Typography variant="h1">Hello world!!</Typography>
+      <Card className={innerClasses.mainCard}>
+        <CardHeader title="Card Header" />
+        <CardContent>
+-          <Card>
++          <Card className={innerClasses.secondaryCard}>
+            <Typography variant="h2">Card Content</Typography>
+          </Card>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+```
+
+Hagamos lo mismo con los componentes `CardHeader` y `CardContent`. En el caso de `CardHeader` sí utilizaremos sus clases ya que solo queremos que el estilo de `color` afecte al título.
+
+```diff
+// universitas-example.styles.ts
+
+import { css } from '@emotion/css';
+- import { cardHeaderClasses, cardContentClasses } from '@mui/material';
++ import { cardHeaderClasses } from '@mui/material';
+
+export const root = css`
+  color: red;
+`;
+
+ export const mainCard = css`
+     height: max-content;
+     width: max-content;
+     background-color: red;
+
+-   & .${cardHeaderClasses.title} {
+-     color: white;
+-   }
+-
+-   & .${cardContentClasses.root} {
+-     background-color: whitesmoke;
+-   }
+ `;
+
+  export const secondaryCard = css`
+    height: max-content;
+    width: max-content;
+    background-color: blue;
+  `;
+
++  export const cardHeader = css`
++    & .${cardHeaderClasses.title} {
++      color: white;
++    }
++  `;
++
++  export const cardContent = css`
++    background-color: whitesmoke;
++  `;
+```
+
+```diff
+// universitas-example.component.tsx
+
+import React from 'react';
+import { Typography, Card, CardHeader, CardContent } from '@mui/material';
+import * as innerClasses from './universitas-example.styles';
+
+export const UniversitasComponent: React.FunctionComponent = () => {
+  return (
+    <div className={innerClasses.root}>
+      <Typography variant="h1">Hello world!!</Typography>
+      <Card className={innerClasses.mainCard}>
+-        <CardHeader title="Card Header" />
++        <CardHeader className={innerClasses.cardHeader} title="Card Header" />
+-        <CardContent>
++        <CardContent className={innerClasses.cardContent}>
++          <Card className={innerClasses.secondaryCard}>
+            <Typography variant="h2">Card Content</Typography>
+          </Card>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+```
+
+## 06 - Usando el Theme
+
+En esta sección vamos a implementar los estilos utilizando el `Theme` ya sea uno personalizado o el de por defecto que nos ofrece **Material**.
+
+Si hemos trabajado con versiones anteriores a **MUI5** y hemos estilado con **JSS** nos tienen que sonar funciones como `makeStyles`, `useTheme` o `useStyles`. Todas estas funciones pese a poder seguir siendo utilizadas han sido deprecadas y no se recomienda su uso.
+
+Para poder utilizar el `Theme` y como sustituto de las funciones anteriores hemos creado el **hook** `useWithTheme` que se encargará de que todo funcione. `useWithTheme` es usado en cada componente y al cual le pasaremos las clases y las propiedades que necesitemos en los estilos. Las propiedades las veremos en el siguiente apartado.
+
+// TODO
+
+## 07 - Pasando propiedades

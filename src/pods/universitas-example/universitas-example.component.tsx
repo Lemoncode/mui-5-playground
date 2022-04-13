@@ -21,10 +21,10 @@ export const UniversitasComponent: React.FunctionComponent<Props> = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h1">Hello world!!</Typography>
-      <Card className={innerClasses.cardContent}>
-        <CardHeader title="Card Header" />
-        <CardContent>
-          <Card>
+      <Card className={innerClasses.mainCard}>
+        <CardHeader className={innerClasses.cardHeader} title="Card Header" />
+        <CardContent className={innerClasses.cardContent}>
+          <Card className={innerClasses.secondaryCard}>
             <Typography variant="h2">Card Content</Typography>
           </Card>
         </CardContent>
