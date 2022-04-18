@@ -2,12 +2,12 @@ import { css } from '@emotion/css';
 import { Theme, cardHeaderClasses, cardContentClasses } from '@mui/material';
 
 interface Props {
-  w: boolean;
+  isTrue: boolean;
 }
 
 export const root = (theme: Theme, props: Props) => css`
   color: ${theme.palette.primary.main};
-  background-color: ${props.w ? 'black' : 'yellow'};
+  background-color: ${props.isTrue ? 'black' : 'yellow'};
 `;
 
 export const mainCard = css`

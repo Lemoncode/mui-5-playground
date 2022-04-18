@@ -556,6 +556,143 @@ Si hemos trabajado con versiones anteriores a **MUI5** y hemos estilado con **JS
 
 Para poder utilizar el `Theme` y como sustituto de las funciones anteriores hemos creado el **hook** `useWithTheme` que se encargará de que todo funcione. `useWithTheme` es usado en cada componente y al cual le pasaremos las clases y las propiedades que necesitemos en los estilos. Las propiedades las veremos en el siguiente apartado.
 
-// TODO
+La importación de `useWithTheme` se hace desde el `core` de la librería.
+
+No todas las clases usarán el `theme` así que estas pueden ser usadas tanto desde el `hook` como de desde los estilos.
+
+```diff
+// universitas-example.component.tsx
+
+import React from 'react';
+- import { Typography, Card, CardHeader, CardContent } from '@mui/material';
++ import { Typography, Card, CardHeader, CardContent, useWithTheme } from '@mui/material';
+import * as innerClasses from './universitas-example.styles';
+
+export const UniversitasComponent: React.FunctionComponent = () => {
++ const classes = useWithTheme(innerClasses);
+
+  return (
+-    <div className={innerClasses.root}>
++    <div className={classes.root}>
+      <Typography variant="h1">Hello world!!</Typography>
+      <Card className={innerClasses.mainCard}>
+        <CardHeader className={innerClasses.cardHeader} title="Card Header" />
+        <CardContent className={innerClasses.cardContent}>
+          <Card className={innerClasses.secondaryCard}>
+            <Typography variant="h2">Card Content</Typography>
+          </Card>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+```
+
+En los estilos importaremos la interface `Theme` de Material para el tipado. Las clases que lo requieran habrá que convertirlas a función y el `theme` será pasado por parámetros, quedando los estilos de la siguiente forma:
+
+```diff
+// universitas-example.styles.ts
+
+import { css } from '@emotion/css';
+- import { cardHeaderClasses } from '@mui/material';
++ import { cardHeaderClasses, Theme } from '@mui/material';
+
+- export const root = css`
+-  color: red;
++ export const root = (theme: Theme) => css`
++  color: ${theme.palette.primary.main};
+`;
+
+ export const mainCard = css`
+     height: max-content;
+     width: max-content;
+     background-color: red;
+
+
+  export const secondaryCard = css`
+    height: max-content;
+    width: max-content;
+    background-color: blue;
+  `;
+
+  export const cardHeader = css`
+    & .${cardHeaderClasses.title} {
+      color: white;
+    }
+  `;
+
+  export const cardContent = css`
+    background-color: whitesmoke;
+  `;
+```
 
 ## 07 - Pasando propiedades
+
+En ocasiones necesitaremos pasar propiedades a nuestros estilos. Estas propiedades las definiremos creando una interfaz y serán pasadas como propiedades en la función de la clases.
+
+```diff
+// universitas-example.styles.ts
+
+import { css } from '@emotion/css';
+import { cardHeaderClasses, Theme } from '@mui/material';
+
++  interface Props {
++    isTrue: boolean;
++  }
+
+- export const root = (theme: Theme) => css`
++ export const root = (theme: Theme, props: Props) => css`
+-  color: ${theme.palette.primary.main};
++  color: ${props.isTrue ? theme.palette.primary.main : theme.palette.secondary.main};
+`;
+
+ export const mainCard = css`
+     height: max-content;
+     width: max-content;
+     background-color: red;
+
+
+  export const secondaryCard = css`
+    height: max-content;
+    width: max-content;
+    background-color: blue;
+  `;
+
+  export const cardHeader = css`
+    & .${cardHeaderClasses.title} {
+      color: white;
+    }
+  `;
+
+  export const cardContent = css`
+    background-color: whitesmoke;
+  `;
+```
+
+```diff
+// universitas-example.component.tsx
+
+import React from 'react';
+import { Typography, Card, CardHeader, CardContent, useWithTheme } from '@mui/material';
+import * as innerClasses from './universitas-example.styles';
+
+export const UniversitasComponent: React.FunctionComponent = () => {
++  const primaryColor: boolean = false
+- const classes = useWithTheme(innerClasses);
++ const classes = useWithTheme(innerClasses, {isTrue: primaryColor});
+
+  return (
+    <div className={classes.root}>
+      <Typography variant="h1">Hello world!!</Typography>
+      <Card className={innerClasses.mainCard}>
+        <CardHeader className={innerClasses.cardHeader} title="Card Header" />
+        <CardContent className={innerClasses.cardContent}>
+          <Card className={innerClasses.secondaryCard}>
+            <Typography variant="h2">Card Content</Typography>
+          </Card>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+```
