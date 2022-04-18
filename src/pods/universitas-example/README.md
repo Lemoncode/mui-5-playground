@@ -4,7 +4,7 @@
 
 **En este ejercicio vamos a analizar e implementar una hoja de estilos siguiendo los estándares que nos propone [Material UI](https://mui.com/material-ui/getting-started/installation/) en su versión 5.**
 
-La librería de estilos que vamos a utilizar es la misma que utiliza **Material** en esta nueva versión: **[Emotion CSS](https://emotion.sh/docs/introduction)**. Esta librería utiliza una sintaxis mucho más cercana al lenguage **CSS** o pre-procesadores tipo **SASS** que su antecesora **JSS** en formato **json**, con lo que escribir estilos nos debería resultar mucho más cómodo y sencillo.
+La librería de estilos que vamos a utilizar es la misma que utiliza **Material** en esta nueva versión: **[Emotion CSS](https://emotion.sh/docs/introduction)**. Esta librería utiliza una sintaxis mucho más cercana al lenguage **CSS** o a pre-procesadores tipo **SASS** que su antecesora **JSS** en formato **json**, con lo que escribir estilos nos debería resultar mucho más cómodo y sencillo.
 
 Un primer vistazo a la [documentación oficial](https://mui.com/system/basics/) nos indica que funciones como **makeStyles** o **useTheme** pese a poder seguir utilizándolas han quedado deprecadas y no sería buena práctica su uso.
 
@@ -37,8 +37,7 @@ Vamos a crear un componente sencillo junto con su hoja de estilos donde iremos u
 
   export const UniversitasComponent: React.FunctionComponent = () => {
     return (
-      <div className={innerClasses.root}>
-        // Asignamos la clase correspondiente al elemento
+      <div className={innerClasses.root}> <!-- Asignamos la clase correspondiente al elemento -->
         <Typography variant="h1">Hello world!!</Typography>
       </div>
     );
@@ -69,10 +68,12 @@ export const UniversitasComponent: React.FunctionComponent = () => {
 };
 ```
 
-Podemos utilizar las clases de formas:
+Podemos utilizar las clases de dos formas:
 
 - Una sería desde la documentación de **MUI** y compiando el literal de la clase que nos interese. En este caso la clase es ` .MuiCard-root`.
-- O bien podemos importar el objeto con todas las clases del componente como haremos en este ejemplo. **Importante añadir el punto antes de la clase**.
+- O bien podemos importar el objeto con todas las clases del componente como haremos en este ejemplo.
+
+> **Importante añadir el punto antes de la clase: `.${nameClass.root}`**
 
 ```diff
 // universitas-example.styles.ts
@@ -300,7 +301,7 @@ export const root = css`
  `;
 ```
 
-Veamos que pasa si eliminamos el espacio entre el ampersan (que hace referencia a la clase mainCard) y el nombre de la clase.
+Veamos que pasa si eliminamos el espacio entre el ampersand (que hace referencia a la clase mainCard) y el nombre de la clase.
 
 ```diff
 // universitas-example.styles.ts
@@ -407,7 +408,7 @@ export const root = css`
 
 ## Optimización
 
-Hasta ahora hemos visto como atacar a distintos elementos desde un contenedor padre. Lo hemos hecho así porque hay casos en los que es la única forma de estilar las distintas partes de un componente, bien sea porque **MUI** así lo implementa o si el componente es propio porque así lo hemos decicido no exponiendo sus clases.
+Hasta ahora hemos visto como atacar a distintos elementos desde un contenedor padre. Lo hemos hecho así porque hay casos en los que es la única forma de estilar las distintas partes de un componente, bien sea porque **MUI** así lo implementa, o si el componente es propio porque así lo hemos decicido no exponiendo sus clases.
 
 Este ejemplo no es el caso, ya que si nos fijamos podemos utilizar el `className` de cada elemento para inyectar sus clases.
 
@@ -550,7 +551,7 @@ export const UniversitasComponent: React.FunctionComponent = () => {
 
 ## 06 - Usando el Theme
 
-En esta sección vamos a implementar los estilos utilizando el `Theme` ya sea uno personalizado o el de por defecto que nos ofrece **Material**.
+En esta sección vamos a implementar los estilos utilizando el `Theme`, ya sea uno personalizado o el de por defecto que nos ofrece **Material**.
 
 Si hemos trabajado con versiones anteriores a **MUI5** y hemos estilado con **JSS** nos tienen que sonar funciones como `makeStyles`, `useTheme` o `useStyles`. Todas estas funciones pese a poder seguir siendo utilizadas han sido deprecadas y no se recomienda su uso.
 
@@ -558,7 +559,7 @@ Para poder utilizar el `Theme` y como sustituto de las funciones anteriores hemo
 
 La importación de `useWithTheme` se hace desde el `core` de la librería.
 
-No todas las clases usarán el `theme` así que estas pueden ser usadas tanto desde el `hook` como de desde los estilos.
+No todas las clases usarán el `theme` así que estas pueden ser usadas tanto desde el `hook` como de desde los estilos. Aunque quizás, una vez usamos `useWithTheme` lo más recomendable sea utilizarlo por consistencia.
 
 ```diff
 // universitas-example.component.tsx
@@ -628,7 +629,7 @@ import { css } from '@emotion/css';
 
 ## 07 - Pasando propiedades
 
-En ocasiones necesitaremos pasar propiedades a nuestros estilos. Estas propiedades las definiremos creando una interfaz y serán pasadas como propiedades en la función de la clases.
+En ocasiones necesitaremos pasar propiedades a nuestros estilos. Estas propiedades las definiremos creando una interfaz y serán pasadas como segundo parámetro a la función de la clases.
 
 ```diff
 // universitas-example.styles.ts
